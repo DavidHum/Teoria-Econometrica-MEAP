@@ -1,0 +1,60 @@
+---
+title: "Practica 1 Econometria"
+author: "David Humeau"
+date: "Tuesday, February 17, 2015"
+output: html_document
+---
+
+1. Considere la base de datos ENFT_2000 en Excel que contiene información del lado de la oferta del
+mercado de trabajo.
+
+a. Importe la información
+```{r a}
+#setwd("../Desktop/Practi 1 Econometria")
+
+Ocupacion <- read.delim("Ocupacion.csv", stringsAsFactor = FALSE)
+Miembros <- read.delim("Miembros.csv", stringsAsFactor = FALSE)
+
+df <- merge(Miembros, Ocupacion,
+            by.x = c("EFT_VIVIENDA","EFT_HOGAR","EFT_MIEMBRO"),
+            by.y = c("EFT_VIVIENDA","EFT_HOGAR","EFT_MIEMBRO"))
+rm(Miembros)
+rm(Ocupacion)
+```
+
+b. Cree la variable años de educación (EDUC) utilizando las variables de la encuesta que contiene
+información sobre la educación de las personas.
+```{r b}
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 1] <- 0
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 2] <- 4
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 3] <- 4 + 8
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 4] <- 4 + 8
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 5] <- 4 + 8 + 4
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 6] <- 4 + 8 + 4 + 2
+df$EDUC[df$EFT_ULT_NIVEL_ALCANZADO == 7] <- 0
+```
+c. Cree las variables EDAD y MUJER donde esta última es igual a uno si el individuo es mujer.
+```{r c}
+df$EDAD <- df$EFT_EDAD
+df$MUJER[df$EFT_SEXO == 2] <- 1
+df$MUJER[df$EFT_SEXO == 1] <- 0
+```
+
+d. Construya dos histogramas de la distribución de educación por edad, uno para cada género.
+```{r, d}
+par(mfrow=c(2,2))
+hist(df$EDAD[df$MUJER == 1],
+     ylab = "Frecuencia", xlab = "Edad mujeres", main = "Histograma de edad por sexo", col = "Light Green")
+hist(df$EDAD[df$MUJER == 0],
+     ylab = "Frecuencia", xlab = "Edad hombres", main = "Histograma de edad por sexo", col = "Light Blue")
+```
+
+e. Cree la variable salario por hora (W) utilizando la información de ingreso laboral en la ocupación
+principal. Tome en cuenta que el ingreso reportado en la base de datos no está necesariamente en las mismas
+escalas para todos los individuos. Es decir, para algunos es salario por hora, pero para otros es salario por
+mes.
+```{r e}
+
+
+
+```
